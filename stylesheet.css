@@ -521,7 +521,7 @@ html[lang="qq"] .side .titlebox ul li, html[lang="ne"] .side .titlebox ul li {
 }
 .side .usertext-body ul li {
     width: 276px;
-    background-color: #dfe2e1;
+    background-color: #f5d253;
     border: none;
     color: black;
     display: block;
@@ -529,7 +529,7 @@ html[lang="qq"] .side .titlebox ul li, html[lang="ne"] .side .titlebox ul li {
     margin: 0 0 -1px 0;
     text-align: left;
     border-top: 1px solid #a5a8a7;
-    border-left: 6px solid #A9ADAB;
+    border-left: 6px solid #b07d10;
 }
 .res-nightmode .side .usertext-body ul li:nth-child(1) {
     color: black!important;

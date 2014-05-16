@@ -7,10 +7,8 @@ class HSideBar():
         self.username = config['name'] or raw_input('Reddit Username: ')
         self.password = config['password'] or raw_input('Reddit Password: ')
         self.subreddit = 'PbzcrgvgvirUF'
-        self.matches = { 'upcoming': '>> Upcoming Matches', 'live': '>> Live Matches' }
-        self.matchTemplate = '*\n\
-            [%(url)s](%(name)s)\n\
-            [%(team_url1)s](%(team_name1)s) vs [%(team_url2)s](%(team_name2)s)\n'
+        self.matches = { 'upcoming': '\n* Upcoming Matches\n', 'live': '\n* Live Matches\n' }
+        self.matchTemplate = '* [%(name)s](%(url)s)  \n%(team_name1)s vs %(team_name2)s\n\n'
 
     def grabMatches(self):
         r = requests.get('http://www.gosugamers.net/hearthstone/api/matches?apiKey=764b0c830d59b8eae8079f2482ac7461')
@@ -51,5 +49,5 @@ config = {
 }
 sidebar = HSideBar(config)
 sidebar.grabMatches()
-sidebar.writeSidebar()
+print sidebar.matches['live']
 
