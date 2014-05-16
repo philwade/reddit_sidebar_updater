@@ -1,6 +1,8 @@
 import praw
 import requests
 import json
+from dateutil import parser
+import datetime
 
 class HSideBar():
     def __init__(self, config):
@@ -8,7 +10,7 @@ class HSideBar():
         self.password = config['password'] or raw_input('Reddit Password: ')
         self.subreddit = 'PbzcrgvgvirUF'
         self.matches = { 'upcoming': '\n* Upcoming Matches\n', 'live': '\n* Live Matches\n' }
-        self.matchTemplate = '* [%(name)s](%(url)s)  \n%(team_name1)s vs %(team_name2)s\n\n'
+        self.matchTemplate = '* [%(time)s %(name)s](%(url)s)  \n%(team_name1)s vs %(team_name2)s\n\n'
 
     def grabMatches(self):
         r = requests.get('http://www.gosugamers.net/hearthstone/api/matches?apiKey=764b0c830d59b8eae8079f2482ac7461')
@@ -17,8 +19,11 @@ class HSideBar():
         for match in data['matches']:
             if match['isLive']:
                 container = 'live'
+                time = 'LIVE'
             else:
                 container = 'upcoming'
+                diff = parser.parse(match['datetime'].split('+')[0]) - datetime.datetime.now()
+                time = str(diff.days) + 'd ' + str(diff.seconds / 60 / 60) + 'h '+ str(diff.seconds % 60) + 'm'
             self.matches[container] += self.matchTemplate % \
                 {
                     'url': match['tournament']['pageUrl'],
@@ -27,6 +32,7 @@ class HSideBar():
                     'team_name1': match['firstOpponent']['shortName'],
                     'team_url2': match['secondOpponent']['pageUrl'],
                     'team_name2': match['secondOpponent']['shortName'],
+                    'time': time,
                 }
 
     def writeSidebar(self):
@@ -50,4 +56,4 @@ config = {
 sidebar = HSideBar(config)
 sidebar.grabMatches()
 print sidebar.matches['live']
-
+print sidebar.matches['upcoming']
