@@ -1,25 +1,42 @@
 import praw
 import requests
-from bs4 import BeautifulSoup
+import json
 
 class HSideBar():
     def __init__(self, config):
         self.username = config['name'] or raw_input('Reddit Username: ')
         self.password = config['password'] or raw_input('Reddit Password: ')
         self.subreddit = 'PbzcrgvgvirUF'
+        self.matches = { 'upcoming': '>> Upcoming Matches', 'live': '>> Live Matches' }
+        self.matchTemplate = '*\n\
+            [%(url)s](%(name)s)\n\
+            [%(team_url1)s](%(team_name1)s) vs [%(team_url2)s](%(team_name2)s)\n'
 
     def grabMatches(self):
-        r = requests.get('http://www.gosugamers.net/hearthstone/gosubet')
-        soup = BeautifulSoup(r.text)
-        upcoming = soup.findAll(id='col1')[0].findAll('div', 'box')[1]
-        print upcoming.span
+        r = requests.get('http://www.gosugamers.net/hearthstone/api/matches?apiKey=764b0c830d59b8eae8079f2482ac7461')
+        data = json.loads(r.text)
+
+        for match in data['matches']:
+            if match['isLive']:
+                container = 'live'
+            else:
+                container = 'upcoming'
+            self.matches[container] += self.matchTemplate % \
+                {
+                    'url': match['tournament']['pageUrl'],
+                    'name': match['tournament']['name'],
+                    'team_url1': match['firstOpponent']['pageUrl'],
+                    'team_name1': match['firstOpponent']['shortName'],
+                    'team_url2': match['secondOpponent']['pageUrl'],
+                    'team_name2': match['secondOpponent']['shortName'],
+                }
 
     def writeSidebar(self):
         r = praw.Reddit(user_agent='HSidebar 0.0.1')
         r.login(self.username,self.password)
         settings = r.get_subreddit(self.subreddit).get_settings()
         #Update the sidebar
-        settings['description'] = 'no wait still a test'
+        settings['description'] = self.matches['live'], self.matches['upcoming']
         settings = r.get_subreddit(self.subreddit).update_settings(description=settings['description'])
 
 f = open('config')
@@ -32,4 +49,7 @@ config = {
     'name': name,
     'password': password,
 }
-HSideBar(config)
+sidebar = HSideBar(config)
+sidebar.grabMatches()
+sidebar.writeSidebar()
+
