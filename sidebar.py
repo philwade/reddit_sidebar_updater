@@ -4,6 +4,7 @@ import requests
 import json
 from dateutil import parser
 import datetime
+import pytz
 
 class HSideBar():
     def __init__(self, config):
@@ -27,8 +28,13 @@ class HSideBar():
                 liveCount += 1
             else:
                 container = 'upcoming'
-                diff = parser.parse(match['datetime'].split('+')[0]) - datetime.datetime.now()
-                time = str(diff.days) + 'd ' + str(diff.seconds / 60 / 60) + 'h '+ str(diff.seconds % 60) + 'm'
+                days, minutes, seconds = ('','','')
+                diff = parser.parse(match['datetime']) - datetime.datetime.now(pytz.timezone('GMT'))
+                if diff.days:
+                    days = str(diff.days) + 'd '
+                if (diff.seconds / 60 / 60) > 0:
+                    minutes = str(diff.seconds / 60 / 60) + 'h '
+                time = days + minutes + str((diff.seconds / 60) % 60) + 'm'
                 upcomingCount += 1
 
             self.matches[container] += self.matchTemplate % \
