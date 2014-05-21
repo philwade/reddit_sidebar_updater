@@ -16,7 +16,7 @@ class HSideBar():
         self.password = config['password'] or raw_input('Reddit Password: ')
         self.bitly = config['bitly']
         self.subreddit = config['subreddit'] or 'PbzcrgvgvirUF'
-        self.matchString = '\n* Upcoming Matches\n'
+        self.matchString = '\n* Upcoming Events\n'
         self.matches = []
         self.matchTemplate = '* [%(time)s %(name)s](%(url)s)  \n%(matchup)s\n\n'
         self.redditagent = None
@@ -75,7 +75,7 @@ class HSideBar():
                 if matchCount >= self.matchLimit:
                     break
         else:
-            self.matchString += '* No Upcoming Matches'
+            self.matchString += '* No Upcoming Events'
 
     def getWikiMatches(self):
         page = self.getWiki('tournaments')
