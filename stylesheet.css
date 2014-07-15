@@ -443,6 +443,7 @@ ul.tabmenu li a, ul.tabmenu li.selected a {
 ul.tabmenu li.selected a {
     color: #FFF;
     font-weight: bold;
+	z-index: 99;
 }
 ul.tabmenu a:hover {
     color: #e6e6e6;
