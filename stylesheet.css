@@ -1096,3 +1096,29 @@ html:lang(aw) .link:not(.linkflair-art) {
 .linkinfo .score .word {
     display: none;
 }
+.arrow {
+    background-image: url(%%lolarrows%%);
+    width: 20px;
+}
+.arrow.up {
+    background-image: url(%%lolarrows%%);
+    background-position: 0px 0px;
+}
+.arrow.down {
+    background-image: url(%%lolarrows%%);
+    background-position: 0px -16px;
+}
+.arrow.downmod {
+    background-image: url(%%lolarrows%%);
+    background-position: -40px -16px;
+}
+.arrow.upmod {
+    background-image: url(%%lolarrows%%);
+    background-position: -40px 0px;
+}
+.likes div.score.likes {
+    color: #deb10d;
+}
+.dislikes div.score.dislikes {
+    color: #de001e;
+}
