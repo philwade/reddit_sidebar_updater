@@ -1122,3 +1122,6 @@ html:lang(aw) .link:not(.linkflair-art) {
 .dislikes div.score.dislikes {
     color: #de001e;
 }
+.comment .midcol {
+    width: 20px;
+}
