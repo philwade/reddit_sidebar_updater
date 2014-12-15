@@ -19,6 +19,7 @@ class HSideBar():
         self.matchString = '\n* Upcoming Events\n'
         self.matches = []
         self.matchTemplate = '* [%(time)s %(name)s](%(url)s)  \n\n'
+        self.footnote = '* [Event data by HearthstoneCalendar.com](http://www.hearthstonecalendar.com)\n'
         self.redditagent = None
         self.shortener = None
         self.matchLimit = 10
@@ -69,6 +70,7 @@ class HSideBar():
 
                 if matchCount >= self.matchLimit:
                     break
+            self.matchString += self.footnote
         else:
             self.matchString += '* No Upcoming Events'
 
