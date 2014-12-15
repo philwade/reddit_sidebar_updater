@@ -18,10 +18,10 @@ class HSideBar():
         self.subreddit = config['subreddit'] or 'PbzcrgvgvirUF'
         self.matchString = '\n* Upcoming Events\n'
         self.matches = []
-        self.matchTemplate = '* [%(time)s %(name)s](%(url)s)  \n%(matchup)s\n\n'
+        self.matchTemplate = '* [%(time)s %(name)s](%(url)s)  \n\n'
         self.redditagent = None
         self.shortener = None
-        self.matchLimit = 7
+        self.matchLimit = 10
 
     def parseTime(self, timeString):
         dt = parser.parse(timeString).astimezone(pytz.timezone('GMT'))
@@ -32,22 +32,17 @@ class HSideBar():
         return time, timeStamp, diff
 
     def grabMatches(self):
-        r = requests.get('http://www.gosugamers.net/hearthstone/api/matches?apiKey=764b0c830d59b8eae8079f2482ac7461')
+        r = requests.get('http://hearthstonecalendar.com/events/json')
         data = json.loads(r.text)
 
-        if len(data['matches']) > 0:
-            for match in data['matches']:
-                if match['isLive']:
-                    time = 'LIVE - '
-                    timeStamp = int(clock.time())
-                else:
-                    time, timeStamp, diff = self.parseTime(match['datetime'])
+        if len(data['events']) > 0:
+            for event in data['events']:
+                time, timeStamp, diff = self.parseTime(event['startDateTime'])
 
                 self.matches.append( \
                 {
-                    'url': self.shorten(match['pageUrl']),
-                    'name': match['tournament']['name'],
-                    'matchup': match['firstOpponent']['shortName'] + ' vs ' + match['secondOpponent']['shortName'],
+                    'url': self.shorten(event['url']),
+                    'name': event['title'],
                     'time': time,
                     'timestamp': timeStamp,
                 })
