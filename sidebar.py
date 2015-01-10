@@ -25,6 +25,7 @@ class HSideBar():
         self.matchLimit = 10
 
     def parseTime(self, timeString):
+        timeString = timeString.replace('(All day)', '01:00-23:00')
         dt = parser.parse(timeString).astimezone(pytz.timezone('GMT'))
         diff = dt - datetime.datetime.now(pytz.timezone('GMT'))
         time = self.printableDate(diff)
@@ -143,5 +144,4 @@ config = json.loads(configString)
 
 sidebar = HSideBar(config)
 sidebar.grabMatches()
-sidebar.getWikiMatches()
 sidebar.writeSidebar()
