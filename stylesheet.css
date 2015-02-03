@@ -1149,3 +1149,7 @@ html:lang(aw) .link:not(.linkflair-art) {
 .flair-silver {
 	background-position: 0 -75px; width: 25px; height: 25px;
 }
+
+.usertext-body .md ul {
+	padding-left: 0;
+}
